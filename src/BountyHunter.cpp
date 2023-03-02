@@ -322,7 +322,7 @@ public:
         return true;
     }
 
-    bool OnGossipSelectCode(Player* pPlayer, Creature* pCreature, uint32 uiSender, uint32 uiAction, const char* code)
+    bool OnGossipSelectCode(Player* pPlayer, Creature* /*pCreature*/, uint32 uiSender, uint32 uiAction, const char* code)
     {
         ClearGossipMenuFor(pPlayer);
 
@@ -418,7 +418,7 @@ public:
     void OnLogin(Player* player)
     {
         // Announce Module
-        if (sConfigMgr->GetBoolDefault("BountyhunterAnnounce.Enable", true))
+        if (sConfigMgr->GetOption<bool>("BountyhunterAnnounce.Enable", true))
         {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00Bounty Hunter |rmodule.");
         }
@@ -434,7 +434,7 @@ public:
 
     {
         // If enabled...
-        if (sConfigMgr->GetBoolDefault("BountyHunter.Enable", true))
+        if (sConfigMgr->GetOption<bool>("BountyHunter.Enable", true))
         {
             if (Killer->GetGUID() == Bounty->GetGUID())
                 return;
