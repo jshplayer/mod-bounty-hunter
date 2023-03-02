@@ -439,6 +439,14 @@ public:
             if (Killer->GetGUID() == Bounty->GetGUID())
                 return;
 
+            if (sConfigMgr->GetOption<bool>("BountyHunter.DisableRewardSameIP", true))
+            {
+                if (Killer->GetSession()->GetRemoteAddress() == Bounty->GetSession()->GetRemoteAddress())
+                {
+                    return;
+                }
+            }
+
             QueryResult result = CharacterDatabase.Query("SELECT * FROM bounties WHERE guid='{}'", Bounty->GetGUID().GetRawValue());
             if (!result)
                 return;
