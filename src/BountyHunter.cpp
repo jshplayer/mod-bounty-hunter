@@ -422,17 +422,17 @@ public:
     }
 };
 
-class BountyhunterAnnounce : public PlayerScript
+class BountyHunterAnnounce : public PlayerScript
 {
 
 public:
 
-    BountyhunterAnnounce() : PlayerScript("BountyhunterAnnounce") {}
+    BountyHunterAnnounce() : PlayerScript("BountyHunterAnnounce") {}
 
     void OnLogin(Player* player)
     {
         // Announce Module
-        if (sConfigMgr->GetOption<bool>("BountyhunterAnnounce.Enable", true))
+        if (sConfigMgr->GetOption<bool>("BountyHunterAnnounce.Enable", true))
         {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00Bounty Hunter |rmodule.");
         }
@@ -569,7 +569,7 @@ public:
 void SC_AddBountyHunterScripts()
 {
     new BountyHunterConfig();
-    new BountyhunterAnnounce();
+    new BountyHunterAnnounce();
     new BountyHunter();
     new BountyKills();
 }
