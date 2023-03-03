@@ -339,11 +339,6 @@ public:
 
         if (uiSender == GOSSIP_SENDER_MAIN)
         {
-            if (islower(code[0]))
-            {
-                toupper(code[0]);
-            }
-
             if (passChecks(pPlayer, code))
             {
                 Player* pBounty = ObjectAccessor::FindPlayerByName(code);
