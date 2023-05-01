@@ -19,14 +19,14 @@ Updated : 02/01/2020
 #define TOKEN_ID 0 // token id
 
 #if SET_CURRENCY == 0
-#define BOUNTY_1 "I would like to place a 20g bounty."
-#define BOUNTY_2 "I would like to place a 40g bounty."
-#define BOUNTY_3 "I would like to place a 100g bounty."
-#define BOUNTY_4 "I would like to place a 200g bounty."
-#define BOUNTY_5 "I would like to place a 300g bounty."
-#define BOUNTY_6 "I would like to place a 400g bounty."
-#define BOUNTY_7 "I would like to place a 500g bounty."
-#define BOUNTY_8 "I would like to place a 700g bounty."
+#define BOUNTY_1 "I would like to place a 50g bounty."
+#define BOUNTY_2 "I would like to place a 100g bounty."
+#define BOUNTY_3 "I would like to place a 200g bounty."
+#define BOUNTY_4 "I would like to place a 400g bounty."
+#define BOUNTY_5 "I would like to place a 800g bounty."
+#define BOUNTY_6 "I would like to place a 1600g bounty."
+#define BOUNTY_7 "I would like to place a 3200g bounty."
+#define BOUNTY_8 "I would like to place a 6400g bounty."
 #endif
 #if SET_CURRENCY == 1
 #define BOUNTY_1 "I would like to place a 20 honor bounty."
@@ -53,14 +53,14 @@ Updated : 02/01/2020
 //these are just visual prices, if you want to to change the real one, edit the sql further below
 enum BountyPrice
 {
-    BOUNTY_PRICE_1 = 20,
-    BOUNTY_PRICE_2 = 40,
-    BOUNTY_PRICE_3 = 100,
-    BOUNTY_PRICE_4 = 200,
-    BOUNTY_PRICE_5 = 300,
-    BOUNTY_PRICE_6 = 400,
-    BOUNTY_PRICE_7 = 500,
-    BOUNTY_PRICE_8 = 700,
+    BOUNTY_PRICE_1 = 50,
+    BOUNTY_PRICE_2 = 100,
+    BOUNTY_PRICE_3 = 200,
+    BOUNTY_PRICE_4 = 400,
+    BOUNTY_PRICE_5 = 800,
+    BOUNTY_PRICE_6 = 1600,
+    BOUNTY_PRICE_7 = 3200,
+    BOUNTY_PRICE_8 = 6400,
 };
 #else
 enum BountyPrice
@@ -106,15 +106,15 @@ void alertServer(const char* name, int msg)
 
     if (msg == 1)
     {
-        message = "A bounty has been placed on ";
+        message = "[ World ]: |cffFF0000A bounty has been placed on |cff4CFF00";
         message += name;
-        message += ". Kill them immediately to collect the reward!";
+        message += "|cffFF0000 Kill them to collect the reward!";
     }
     else if (msg == 2)
     {
-        message = "The bounty on ";
+        message = "[ World ]: |cffFF0000The bounty on |cff4CFF00";
         message += name;
-        message += " has been collected!";
+        message += "|cffFF0000 has been collected!";
     }
 
     sWorld->SendServerMessage(SERVER_MSG_STRING, message.c_str(), 0);
@@ -349,7 +349,7 @@ public:
                         if (hasCurrency(pPlayer, BOUNTY_PRICE_1, SET_CURRENCY))
                         {
     #if SET_CURRENCY != 2
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','20', '1')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','50', '1')", pBounty->GetGUID().GetRawValue());
     #else
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','1', '1')", pBounty->GetGUID().GetRawValue());
     #endif
@@ -365,7 +365,7 @@ public:
                         if (hasCurrency(pPlayer, BOUNTY_PRICE_2, SET_CURRENCY))
                         {
     #if SET_CURRENCY != 2
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '40', '2')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '100', '2')", pBounty->GetGUID().GetRawValue());
     #else
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '3', '2')", pBounty->GetGUID().GetRawValue());
     #endif
@@ -380,7 +380,7 @@ public:
                         if (hasCurrency(pPlayer, BOUNTY_PRICE_3, SET_CURRENCY))
                         {
     #if SET_CURRENCY != 2
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '100', '3')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '3')", pBounty->GetGUID().GetRawValue());
     #else
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '5', '3')", pBounty->GetGUID().GetRawValue());
     #endif
@@ -395,7 +395,7 @@ public:
                         if (hasCurrency(pPlayer, BOUNTY_PRICE_4, SET_CURRENCY))
                         {
     #if SET_CURRENCY != 2
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '4')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '400', '4')", pBounty->GetGUID().GetRawValue());
     #else
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '10', '3')", pBounty->GetGUID().GetRawValue());
     #endif
