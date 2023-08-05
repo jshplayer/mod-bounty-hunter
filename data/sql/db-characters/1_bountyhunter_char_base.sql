@@ -1,7 +1,4 @@
--- Dumping structure for table characters.bounties
-DROP TABLE IF EXISTS `bounties`;
-
-CREATE TABLE `bounties` (
+CREATE TABLE IF NOT EXISTS `bounties` (
   `guid` int(200) unsigned NOT NULL,
   `visual` varchar(200) NOT NULL,
   `price` int(200) NOT NULL,
