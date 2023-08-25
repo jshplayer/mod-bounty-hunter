@@ -15,8 +15,8 @@ Updated : 02/01/2020
 #include <AI/ScriptedAI/ScriptedGossip.h>
 #include <string>
 
-#define SET_CURRENCY 0  //0 for gold, 1 for honor, 2 for tokens
-#define TOKEN_ID 0 // token id
+#define SET_CURRENCY 2  //0 for gold, 1 for honor, 2 for tokens
+#define TOKEN_ID 37711 // token id
 
 #if SET_CURRENCY == 0
 #define BOUNTY_1 "I would like to place a 50g bounty."
@@ -35,10 +35,10 @@ Updated : 02/01/2020
 #define BOUNTY_4 "I would like to place a 200 honor bounty."
 #endif
 #if SET_CURRENCY == 2
-#define BOUNTY_1 "I would like to place a 1 token bounty."
-#define BOUNTY_2 "I would like to place a 3 token bounty."
-#define BOUNTY_3 "I would like to place a 5 token bounty."
-
+#define BOUNTY_1 "I would like to place a 50 War Coin bounty."
+#define BOUNTY_2 "I would like to place a 200 War Coin bounty."
+#define BOUNTY_3 "I would like to place a 500 War Coin bounty."
+#define BOUNTY_4 "I would like to place a 1000 War Coin bounty."
 #endif
 
 #define PLACE_BOUNTY "I would like to place a bounty."
@@ -65,10 +65,10 @@ enum BountyPrice
 #else
 enum BountyPrice
 {
-    BOUNTY_PRICE_1 = 1,
-    BOUNTY_PRICE_2 = 3,
-    BOUNTY_PRICE_3 = 5,
-    BOUNTY_PRICE_4 = 10,
+    BOUNTY_PRICE_1 = 50,
+    BOUNTY_PRICE_2 = 200,
+    BOUNTY_PRICE_3 = 500,
+    BOUNTY_PRICE_4 = 1000,
 };
 #endif
 
@@ -108,7 +108,7 @@ void alertServer(const char* name, int msg)
     {
         message = "[ World ]: |cffFF0000A bounty has been placed on |cff4CFF00";
         message += name;
-        message += "|cffFF0000 Kill them to collect the reward!";
+        message += "|cffFF0000, kill them to collect the reward!";
     }
     else if (msg == 2)
     {
@@ -154,7 +154,7 @@ bool hasCurrency(Player* pPlayer, uint32 required, int currency)
         {
             if (!pPlayer->HasItemCount(TOKEN_ID, required))
             {
-                m_session->SendNotification("You don't have enough tokens!");
+                m_session->SendNotification("You don't have enough War Coins!");
                 return false;
             }
             pPlayer->DestroyItemCount(TOKEN_ID, required, true, false);
@@ -295,7 +295,7 @@ public:
                         option = names[0].Get<std::string>();
                         option += " ";
                         option += fields[1].Get<std::string>();
-                        option += " coins";
+                        option += " War Coins";
                         AddGossipItemFor(pPlayer, GOSSIP_ICON_BATTLE, option, GOSSIP_SENDER_MAIN, 1);
                     } while (Bounties->NextRow());
                 }
@@ -309,7 +309,7 @@ public:
                     option = names[0].Get<std::string>();
                     option += " ";
                     option += fields[1].Get<std::string>();
-                    option += " coins";
+                    option += " War Coins";
                     AddGossipItemFor(pPlayer, GOSSIP_ICON_BATTLE, option, GOSSIP_SENDER_MAIN, 1);
 
                 }
@@ -351,7 +351,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','50', '1')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','1', '1')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','50', '1')", pBounty->GetGUID().GetRawValue());
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -367,7 +367,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '100', '2')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '3', '2')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '2')", pBounty->GetGUID().GetRawValue());
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -382,7 +382,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '3')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '5', '3')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '500', '3')", pBounty->GetGUID().GetRawValue());
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -397,7 +397,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '400', '4')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '10', '3')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '1000', '4')", pBounty->GetGUID().GetRawValue());
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -494,7 +494,7 @@ public:
 #endif
 
 #if SET_CURRENCY == 1
-            switch (fields[2].GetUInt64())
+            switch (fields[2].Get<uint64>())
             {
                 case 1:
                     Killer->SetHonorPoints(Killer->GetHonorPoints() + (BOUNTY_PRICE_1));
@@ -524,7 +524,7 @@ public:
 #endif
 
 #if SET_CURRENCY == 2
-            switch (fields[2].GetUInt64())
+            switch (fields[2].Get<uint64>())
             {
                 case 1:
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_1);
@@ -534,6 +534,9 @@ public:
                     break;
                 case 3:
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_3);
+                    break;
+				case 4:
+                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_4);
                     break;
             }
 #endif
