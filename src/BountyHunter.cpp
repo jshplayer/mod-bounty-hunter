@@ -34,11 +34,12 @@ Updated : 02/01/2020
 #define BOUNTY_3 "I would like to place a 100 honor bounty."
 #define BOUNTY_4 "I would like to place a 200 honor bounty."
 #endif
+//tokens
 #if SET_CURRENCY == 2
-#define BOUNTY_1 "I would like to place a 50 War Coin bounty."
-#define BOUNTY_2 "I would like to place a 200 War Coin bounty."
-#define BOUNTY_3 "I would like to place a 500 War Coin bounty."
-#define BOUNTY_4 "I would like to place a 1000 War Coin bounty."
+#define BOUNTY_1 "I would like to place a 100 War Coin bounty."
+#define BOUNTY_2 "I would like to place a 500 War Coin bounty."
+#define BOUNTY_3 "I would like to place a 1000 War Coin bounty."
+#define BOUNTY_4 "I would like to place a 5000 War Coin bounty."
 #endif
 
 #define PLACE_BOUNTY "I would like to place a bounty."
@@ -63,12 +64,13 @@ enum BountyPrice
     BOUNTY_PRICE_8 = 6400,
 };
 #else
+//tokens
 enum BountyPrice
 {
-    BOUNTY_PRICE_1 = 50,
-    BOUNTY_PRICE_2 = 200,
-    BOUNTY_PRICE_3 = 500,
-    BOUNTY_PRICE_4 = 1000,
+    BOUNTY_PRICE_1 = 100,
+    BOUNTY_PRICE_2 = 500,
+    BOUNTY_PRICE_3 = 1000,
+    BOUNTY_PRICE_4 = 5000,
 };
 #endif
 
@@ -114,7 +116,7 @@ void alertServer(const char* name, int msg)
     {
         message = "[ World ]: |cffFF0000The bounty on |cff4CFF00";
         message += name;
-        message += "|cffFF0000 has been collected!";
+        message += "|cffFF0000 has been collected minus tax!";
     }
 
     sWorld->SendServerMessage(SERVER_MSG_STRING, message.c_str(), 0);
@@ -351,7 +353,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','50', '1')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','50', '1')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}','100', '1')", pBounty->GetGUID().GetRawValue()); //tokens
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -367,7 +369,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '100', '2')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '2')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '500', '2')", pBounty->GetGUID().GetRawValue()); //tokens
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -382,7 +384,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '200', '3')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '500', '3')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '1000', '3')", pBounty->GetGUID().GetRawValue()); //tokens
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -397,7 +399,7 @@ public:
     #if SET_CURRENCY != 2
                             CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '400', '4')", pBounty->GetGUID().GetRawValue());
     #else
-                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '1000', '4')", pBounty->GetGUID().GetRawValue());
+                            CharacterDatabase.Execute("INSERT INTO bounties VALUES('{}', '5000', '4')", pBounty->GetGUID().GetRawValue()); //tokens
     #endif
                             alertServer(code, 1);
                             flagPlayer(code);
@@ -524,19 +526,24 @@ public:
 #endif
 
 #if SET_CURRENCY == 2
+//tokens
             switch (fields[2].Get<uint64>())
             {
                 case 1:
-                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_1);
+					BOUNTY_PRICE_1_TAX = BOUNTY_PRICE_1 * 0.90;
+                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_1_TAX);
                     break;
                 case 2:
-                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_2);
+                    BOUNTY_PRICE_2_TAX = BOUNTY_PRICE_2 * 0.90;
+                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_2_TAX);
                     break;
                 case 3:
-                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_3);
+                    BOUNTY_PRICE_3_TAX = BOUNTY_PRICE_3 * 0.90;
+                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_3_TAX);
                     break;
 				case 4:
-                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_4);
+                    BOUNTY_PRICE_4_TAX = BOUNTY_PRICE_4 * 0.90;
+                    Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_4_TAX);
                     break;
             }
 #endif
