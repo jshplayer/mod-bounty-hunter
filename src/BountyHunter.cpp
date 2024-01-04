@@ -530,19 +530,19 @@ public:
             switch (fields[2].Get<uint64>())
             {
                 case 1:
-					BOUNTY_PRICE_1_TAX = BOUNTY_PRICE_1 * 0.90;
+					float BOUNTY_PRICE_1_TAX = BOUNTY_PRICE_1 * 0.90;
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_1_TAX);
                     break;
                 case 2:
-                    BOUNTY_PRICE_2_TAX = BOUNTY_PRICE_2 * 0.90;
+                    float BOUNTY_PRICE_2_TAX = BOUNTY_PRICE_2 * 0.90;
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_2_TAX);
                     break;
                 case 3:
-                    BOUNTY_PRICE_3_TAX = BOUNTY_PRICE_3 * 0.90;
+                    float BOUNTY_PRICE_3_TAX = BOUNTY_PRICE_3 * 0.90;
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_3_TAX);
                     break;
 				case 4:
-                    BOUNTY_PRICE_4_TAX = BOUNTY_PRICE_4 * 0.90;
+                    float BOUNTY_PRICE_4_TAX = BOUNTY_PRICE_4 * 0.90;
                     Killer->AddItem(TOKEN_ID, BOUNTY_PRICE_4_TAX);
                     break;
             }
